@@ -4,7 +4,8 @@ Ejemplo de uso de ReactJS + ES6 con el clásico TodoMVC utilizando Redux. Se tra
 
 1. Instalar las dependencias:
   ```
-  npm install
+  npm install       // Si usas npm
+  yarn install      // Si usas yarn
   ```
 
 2. Compilar con webpack e iniciar el servidor de desarrollo:
