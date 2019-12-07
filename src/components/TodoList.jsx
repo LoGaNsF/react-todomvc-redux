@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import TodoItem from './TodoItem';
 import { SHOW_ALL, SHOW_ACTIVE, SHOW_COMPLETED } from '../constants/FilterTypes';
@@ -11,9 +12,8 @@ const TODO_FILTERS = {
 
 class TodoList extends Component {
   renderToggleAll() {
-    const completed = this.props.todos.reduce((count, task) => {
-      return task.completed ? count + 1 : count;
-    }, 0);
+    const { todos, actions } = this.props;
+    const completed = todos.reduce((count, task) => (task.completed ? count + 1 : count), 0);
 
     return (
       <div>
@@ -21,8 +21,8 @@ class TodoList extends Component {
           type="checkbox"
           id="toggle-all"
           className="toggle-all"
-          checked={completed === this.props.todos.length}
-          onChange={e => this.props.actions.completeAll(e.target.checked)}
+          checked={completed === todos.length}
+          onChange={e => actions.completeAll(e.target.checked)}
         />
         <label htmlFor="toggle-all">Mark all as complete</label>
       </div>
@@ -30,15 +30,14 @@ class TodoList extends Component {
   }
 
   render() {
-    const { todos, filter } = this.props;
+    const { todos, filter, actions } = this.props;
     const filteredTodos = todos.filter(TODO_FILTERS[filter]);
 
     return (
       <section className="main">
-        {!!this.props.todos.length && this.renderToggleAll()}
+        {!!todos.length && this.renderToggleAll()}
         <ul className="todo-list">
-          {filteredTodos.map(todo =>
-            <TodoItem key={todo.id} data={todo} {...this.props.actions} />
+          {filteredTodos.map(todo => <TodoItem key={todo.id} data={todo} {...actions} />
           )}
         </ul>
       </section>

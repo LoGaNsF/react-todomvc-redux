@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import { SHOW_ALL, SHOW_ACTIVE, SHOW_COMPLETED } from '../constants/FilterTypes';
 
@@ -9,12 +10,13 @@ const FILTER_TITLES = {
 };
 
 class Footer extends Component {
-  renderFilterLink(filter) {
-    const title = FILTER_TITLES[filter];
-    const selectedClass = filter === this.props.filter ? 'selected' : '';
+  renderFilterLink(link) {
+    const { filter, onFilter } = this.props;
+    const title = FILTER_TITLES[link];
+    const selectedClass = link === filter ? 'selected' : '';
     const onClick = (e) => {
       e.preventDefault();
-      this.props.onFilter(filter);
+      onFilter(link);
     };
 
     return (
@@ -25,30 +27,33 @@ class Footer extends Component {
   }
 
   renderClearButton() {
+    const { onClearCompleted } = this.props;
+
     return (
-      <button className="clear-completed" onClick={() => this.props.onClearCompleted()}>
+      <button type="button" className="clear-completed" onClick={() => onClearCompleted()}>
         Clear completed
       </button>
     );
   }
 
   render() {
-    const { activeCount } = this.props;
-    const countText = this.props.activeCount > 1 ? 'items left' : 'item left';
+    const { activeCount, completedCount } = this.props;
+    const countText = activeCount > 1 ? ' items left' : ' item left';
 
     return (
       <footer className="footer">
         <span className="todo-count">
-          <strong>{activeCount}</strong> {countText}
+          <strong>{activeCount}</strong>
+          {countText}
         </span>
         <ul className="filters">
-          {['SHOW_ALL', 'SHOW_ACTIVE', 'SHOW_COMPLETED'].map(filter =>
+          {['SHOW_ALL', 'SHOW_ACTIVE', 'SHOW_COMPLETED'].map(filter => (
             <li key={filter}>
               {this.renderFilterLink(filter)}
             </li>
-          )}
+          ))}
         </ul>
-        {!!this.props.completedCount && this.renderClearButton()}
+        {!!completedCount && this.renderClearButton()}
       </footer>
     );
   }

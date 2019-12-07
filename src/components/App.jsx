@@ -1,18 +1,17 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as TodoActions from '../actions/TodoActions';
 import { setVisibilityFilter } from '../actions/FilterActions';
 
-import Header from '../components/Header';
-import TodoList from '../components/TodoList';
+import Header from './Header';
+import TodoList from './TodoList';
 import Footer from './Footer';
 
 const App = ({ todos, visibilityFilter, actions, setFilter }) => {
-  const completedCount = todos.reduce((count, todo) => {
-    return todo.completed ? count + 1 : count;
-  }, 0);
+  const completedCount = todos.reduce((count, todo) => (todo.completed ? count + 1 : count), 0);
   const activeCount = todos.length - completedCount;
 
   return (
