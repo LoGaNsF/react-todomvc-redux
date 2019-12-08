@@ -8,7 +8,7 @@ Ejemplo de uso de ReactJS + ES6 con el clásico TodoMVC utilizando Redux. Se tra
   yarn install      // Si usas yarn
   ```
 
-2. Compilar con Webpack e iniciar el servidor de desarrollo:
+2. Iniciar el servidor de desarrollo:
   ```
   npm run start
   ```

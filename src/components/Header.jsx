@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class Header extends Component {
   constructor(props) {
@@ -11,9 +12,11 @@ class Header extends Component {
   }
 
   handleKeyDown(e) {
+    const { addTodo } = this.props;
+
     if (e.keyCode === 13) {
       e.preventDefault();
-      this.props.addTodo(e.target.value);
+      addTodo(e.target.value);
       this.setState({ text: '' });
     }
   }
@@ -23,17 +26,18 @@ class Header extends Component {
   }
 
   render() {
+    const { text } = this.state;
+
     return (
       <header>
-        <h1>todo</h1>
+        <h1>todos</h1>
         <input
           type="text"
           className="new-todo"
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDown}
           placeholder="What needs to be done?"
-          value={this.state.text}
-          autoFocus
+          value={text}
         />
       </header>
     );

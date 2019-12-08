@@ -1,12 +1,15 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class TodoItem extends Component {
   constructor(props) {
     super(props);
 
+    const { data } = this.props;
+
     this.state = {
       editing: false,
-      editText: this.props.data.text
+      editText: data.text
     };
 
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -21,27 +24,33 @@ class TodoItem extends Component {
   }
 
   handleSubmit() {
-    const val = this.state.editText.trim();
+    const { editText } = this.state;
+    const { data, editTodo, deleteTodo } = this.props;
+    const val = editText.trim();
 
     if (val) {
       this.setState({ editing: false, editText: val });
-      this.props.editTodo(this.props.data.id, val);
+      editTodo(data.id, val);
     } else {
-      this.props.deleteTodo(this.props.data.id);
+      deleteTodo(data.id);
     }
   }
 
   handleToggle() {
-    this.props.completeTodo(this.props.data.id);
+    const { data, completeTodo } = this.props;
+    completeTodo(data.id);
   }
 
   handleDestroy() {
-    this.props.deleteTodo(this.props.data.id);
+    const { data, deleteTodo } = this.props;
+    deleteTodo(data.id);
   }
 
   handleKeyDown(event) {
+    const { data } = this.props;
+
     if (event.which === 27) {
-      this.setState({ editing: false, editText: this.props.data.text });
+      this.setState({ editing: false, editText: data.text });
     } else if (event.which === 13) {
       this.handleSubmit();
     }
@@ -53,8 +62,11 @@ class TodoItem extends Component {
 
   render() {
     let className = '';
-    if (this.props.data.completed) { className += ' completed'; }
-    if (this.state.editing) { className += ' editing'; }
+    const { data } = this.props;
+    const { editing, editText } = this.state;
+
+    if (data.completed) { className += ' completed'; }
+    if (editing) { className += ' editing'; }
 
     return (
       <li className={className}>
@@ -62,16 +74,16 @@ class TodoItem extends Component {
           <input
             type="checkbox"
             className="toggle"
-            checked={this.props.data.completed}
+            checked={data.completed}
             onChange={this.handleToggle}
           />
-          <label htmlFor="toggle" onDoubleClick={this.handleEdit}>{this.props.data.text}</label>
-          <button className="destroy" onClick={this.handleDestroy} />
+          <label htmlFor="toggle" onDoubleClick={this.handleEdit}>{data.text}</label>
+          <button type="button" aria-label="Delete" className="destroy" onClick={this.handleDestroy} />
         </div>
         <input
           type="text"
           className="edit"
-          value={this.state.editText}
+          value={editText}
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDown}
         />

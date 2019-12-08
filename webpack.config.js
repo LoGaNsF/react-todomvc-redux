@@ -1,45 +1,52 @@
-const webpack = require('webpack');
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  resolve: {
-    extensions: ['', '.js', '.jsx']
-  },
-  devTool: 'cheap-module-eval-source-map',
-  noInfo: false,
-  target: 'web',
-
-  entry: [
-    'webpack-dev-server/client',
-    'webpack/hot/only-dev-server',
-    './src/index.jsx'
-  ],
+  entry: './src/index.jsx',
   output: {
-    path: path.join(__dirname, 'dist'),
-    publicPath: '/',
+    path: path.join(__dirname, '/dist'),
     filename: 'bundle.js'
   },
 
   module: {
-    loaders: [
-      { test: /\.jsx?$/, include: path.join(__dirname, 'src'), loaders: ['babel'] },
-      { test: /\.css$/, loaders: ['style', 'css?sourceMap'] },
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loaders: ['file'] },
-      { test: /\.(woff|woff2)$/, loader: 'url?prefix=font/&limit=5000' },
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream' },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml' }
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader'
+        }
+      },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: 'html-loader'
+          }
+        ]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      }
     ]
   },
 
+  resolve: {
+    extensions: ['*', '.js', '.jsx']
+  },
+
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new HtmlWebpackPlugin({
+      template: './src/index.html'
+    })
   ],
 
   devServer: {
-    host: '0.0.0.0',
-    port: 3000,
     inline: true,
-    contentBase: './src'
+    port: 3000
   }
 };
