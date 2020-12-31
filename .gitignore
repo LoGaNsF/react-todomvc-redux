@@ -1,6 +1,22 @@
+# dependencies
+node_modules
+
+# production
+dist
+
+# mac system files
+.DS_Store
+
+# enviroment files
+.env
+
+# log files
+npm-debug.log*
+yarn-error.log
+
+# linting
+.eslintcache
+
+# IDE
 .idea
 .vscode
-*.log
-npm-debug.log*
-node_modules
-/dist/

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class TodoItem extends Component {
@@ -65,8 +65,12 @@ class TodoItem extends Component {
     const { data } = this.props;
     const { editing, editText } = this.state;
 
-    if (data.completed) { className += ' completed'; }
-    if (editing) { className += ' editing'; }
+    if (data.completed) {
+      className += ' completed';
+    }
+    if (editing) {
+      className += ' editing';
+    }
 
     return (
       <li className={className}>
@@ -77,8 +81,15 @@ class TodoItem extends Component {
             checked={data.completed}
             onChange={this.handleToggle}
           />
-          <label htmlFor="toggle" onDoubleClick={this.handleEdit}>{data.text}</label>
-          <button type="button" aria-label="Delete" className="destroy" onClick={this.handleDestroy} />
+          <label htmlFor="toggle" onDoubleClick={this.handleEdit}>
+            {data.text}
+          </label>
+          <button
+            type="button"
+            aria-label="Delete"
+            className="destroy"
+            onClick={this.handleDestroy}
+          />
         </div>
         <input
           type="text"
@@ -97,7 +108,7 @@ TodoItem.propTypes = {
     id: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     completed: PropTypes.bool.isRequired,
-    created_at: PropTypes.object.isRequired
+    created_at: PropTypes.instanceOf(Date).isRequired
   }).isRequired,
   editTodo: PropTypes.func.isRequired,
   deleteTodo: PropTypes.func.isRequired,

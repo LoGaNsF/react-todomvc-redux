@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
@@ -7,7 +6,9 @@ const Link = ({ active, children, setFilter }) => (
     className={classnames({ selected: active })}
     style={{ cursor: 'pointer' }}
     onClick={() => setFilter()}
-  >
+    onKeyDown={() => setFilter()}
+    role="button"
+    tabIndex="0">
     {children}
   </a>
 );

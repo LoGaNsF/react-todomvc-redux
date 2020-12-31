@@ -1,52 +1,46 @@
 const path = require('path');
+const webpack = require('webpack');
+const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
+  context: __dirname,
   entry: './src/index.jsx',
-  output: {
-    path: path.join(__dirname, '/dist'),
-    filename: 'bundle.js'
-  },
-
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader'
-        }
+        use: ['babel-loader']
       },
       {
-        test: /\.html$/,
-        use: [
-          {
-            loader: 'html-loader'
-          }
-        ]
-      },
-      {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader'
-        ]
+        test: /\.(css)$/,
+        use: ['style-loader', 'css-loader']
       }
     ]
   },
-
   resolve: {
     extensions: ['*', '.js', '.jsx']
   },
-
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/index.html'
-    })
-  ],
-
+  output: {
+    path: path.resolve(__dirname, './dist'),
+    filename: '[name].js',
+    publicPath: '/'
+  },
   devServer: {
-    inline: true,
-    port: 3000
-  }
+    contentBase: path.resolve(__dirname, './dist'),
+    historyApiFallback: true,
+    hot: true,
+    port: 3000,
+    publicPath: '/'
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new ESLintPlugin(),
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      template: path.join('./src', 'index.html'),
+      filename: 'index.html'
+    })
+  ]
 };

@@ -20,19 +20,17 @@ export default function todos(state = [], action) {
         }
       ];
     case DELETE_TODO:
-      return state.filter(todo => todo.id !== action.id);
+      return state.filter((todo) => todo.id !== action.id);
     case EDIT_TODO:
-      return state.map(todo => (
-        todo.id === action.id ? { ...todo, text: action.text } : todo
-      ));
+      return state.map((todo) => (todo.id === action.id ? { ...todo, text: action.text } : todo));
     case COMPLETE_TODO:
-      return state.map(todo => (
+      return state.map((todo) =>
         todo.id === action.id ? { ...todo, completed: !todo.completed } : todo
-      ));
+      );
     case COMPLETE_ALL:
-      return state.map(todo => ({ ...todo, completed: action.completed }));
+      return state.map((todo) => ({ ...todo, completed: action.completed }));
     case CLEAR_COMPLETED:
-      return state.filter(todo => !todo.completed);
+      return state.filter((todo) => !todo.completed);
     default:
       return state;
   }

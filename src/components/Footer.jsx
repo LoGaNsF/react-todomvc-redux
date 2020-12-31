@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 
 import { SHOW_ALL, SHOW_ACTIVE, SHOW_COMPLETED } from '../constants/FilterTypes';
@@ -21,25 +20,17 @@ const Footer = ({ activeCount, completedCount, onClearCompleted }) => {
         {countText}
       </span>
       <ul className="filters">
-        {Object.keys(FILTER_TITLES).map(filter => (
+        {Object.keys(FILTER_TITLES).map((filter) => (
           <li key={filter}>
-            <FilterLink filter={filter}>
-              {FILTER_TITLES[filter]}
-            </FilterLink>
+            <FilterLink filter={filter}>{FILTER_TITLES[filter]}</FilterLink>
           </li>
         ))}
       </ul>
-      {
-        !!completedCount && (
-        <button
-          type="button"
-          className="clear-completed"
-          onClick={onClearCompleted}
-        >
+      {!!completedCount && (
+        <button type="button" className="clear-completed" onClick={onClearCompleted}>
           Clear completed
         </button>
-        )
-      }
+      )}
     </footer>
   );
 };

@@ -8,11 +8,11 @@ import TodoList from '../components/TodoList';
 
 const TODO_FILTERS = {
   [SHOW_ALL]: () => true,
-  [SHOW_ACTIVE]: todo => !todo.completed,
-  [SHOW_COMPLETED]: todo => todo.completed
+  [SHOW_ACTIVE]: (todo) => !todo.completed,
+  [SHOW_COMPLETED]: (todo) => todo.completed
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   todos: state.todos.filter(TODO_FILTERS[state.visibilityFilter])
 });
 
@@ -20,7 +20,4 @@ const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(TodoActions, dispatch)
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TodoList);
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
