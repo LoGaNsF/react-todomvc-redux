@@ -1,107 +1,62 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
-class TodoItem extends Component {
-  constructor(props) {
-    super(props);
+const TodoItem = ({ data, editTodo, deleteTodo, completeTodo }) => {
+  const [state, setState] = useState({ editing: false, editText: data.text });
 
-    const { data } = this.props;
-
-    this.state = {
-      editing: false,
-      editText: data.text
-    };
-
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleEdit = this.handleEdit.bind(this);
-    this.handleToggle = this.handleToggle.bind(this);
-    this.handleDestroy = this.handleDestroy.bind(this);
-  }
-
-  handleEdit() {
-    this.setState({ editing: true });
-  }
-
-  handleSubmit() {
-    const { editText } = this.state;
-    const { data, editTodo, deleteTodo } = this.props;
-    const val = editText.trim();
+  const handleSubmit = () => {
+    const val = state.editText.trim();
 
     if (val) {
-      this.setState({ editing: false, editText: val });
+      setState({ editing: false, editText: val });
       editTodo(data.id, val);
     } else {
       deleteTodo(data.id);
     }
-  }
+  };
 
-  handleToggle() {
-    const { data, completeTodo } = this.props;
-    completeTodo(data.id);
-  }
-
-  handleDestroy() {
-    const { data, deleteTodo } = this.props;
-    deleteTodo(data.id);
-  }
-
-  handleKeyDown(event) {
-    const { data } = this.props;
-
+  const handleKeyDown = (event) => {
     if (event.which === 27) {
-      this.setState({ editing: false, editText: data.text });
+      setState({ editing: false, editText: data.text });
     } else if (event.which === 13) {
-      this.handleSubmit();
+      handleSubmit();
     }
-  }
+  };
 
-  handleChange(event) {
-    this.setState({ editText: event.target.value });
-  }
+  const handleChange = (event) => {
+    setState({ editText: event.target.value });
+  };
 
-  render() {
-    let className = '';
-    const { data } = this.props;
-    const { editing, editText } = this.state;
-
-    if (data.completed) {
-      className += ' completed';
-    }
-    if (editing) {
-      className += ' editing';
-    }
-
-    return (
-      <li className={className}>
-        <div className="view">
-          <input
-            type="checkbox"
-            className="toggle"
-            checked={data.completed}
-            onChange={this.handleToggle}
-          />
-          <label htmlFor="toggle" onDoubleClick={this.handleEdit}>
-            {data.text}
-          </label>
-          <button
-            type="button"
-            aria-label="Delete"
-            className="destroy"
-            onClick={this.handleDestroy}
-          />
-        </div>
+  return (
+    <li className={classnames({ completed: data.completed, editing: state.editing })}>
+      <div className="view">
         <input
-          type="text"
-          className="edit"
-          value={editText}
-          onChange={this.handleChange}
-          onKeyDown={this.handleKeyDown}
+          type="checkbox"
+          className="toggle"
+          checked={data.completed}
+          onChange={() => completeTodo(data.id)}
         />
-      </li>
-    );
-  }
-}
+        <label htmlFor="toggle" onDoubleClick={() => setState({ editing: true })}>
+          {data.text}
+        </label>
+        <button
+          type="button"
+          aria-label="Delete"
+          className="destroy"
+          onClick={() => deleteTodo(data.id)}
+        />
+      </div>
+      <input
+        type="text"
+        className="edit"
+        value={state.editText}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+      />
+    </li>
+  );
+};
 
 TodoItem.propTypes = {
   data: PropTypes.shape({

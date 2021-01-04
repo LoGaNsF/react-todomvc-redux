@@ -1,48 +1,31 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-class Header extends Component {
-  constructor(props) {
-    super(props);
+const Header = ({ addTodo }) => {
+  const [value, setValue] = useState('');
 
-    this.state = { text: '' };
-
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleKeyDown(e) {
-    const { addTodo } = this.props;
-
-    if (e.keyCode === 13) {
-      e.preventDefault();
-      addTodo(e.target.value);
-      this.setState({ text: '' });
+  const handleKeyDown = (event) => {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      addTodo(event.target.value);
+      setValue('');
     }
-  }
+  };
 
-  handleChange(e) {
-    this.setState({ text: e.target.value });
-  }
-
-  render() {
-    const { text } = this.state;
-
-    return (
-      <header>
-        <h1>todos</h1>
-        <input
-          type="text"
-          className="new-todo"
-          onChange={this.handleChange}
-          onKeyDown={this.handleKeyDown}
-          placeholder="What needs to be done?"
-          value={text}
-        />
-      </header>
-    );
-  }
-}
+  return (
+    <header>
+      <h1>todos</h1>
+      <input
+        type="text"
+        className="new-todo"
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={handleKeyDown}
+        placeholder="What needs to be done?"
+        value={value}
+      />
+    </header>
+  );
+};
 
 Header.propTypes = {
   addTodo: PropTypes.func.isRequired
