@@ -1,11 +1,11 @@
 import * as TodoTypes from '../constants/TodoTypes';
 
-export const addTodo = text => ({
+export const addTodo = (text) => ({
   type: TodoTypes.ADD_TODO,
   text
 });
 
-export const deleteTodo = id => ({
+export const deleteTodo = (id) => ({
   type: TodoTypes.DELETE_TODO,
   id
 });
@@ -16,12 +16,12 @@ export const editTodo = (id, text) => ({
   text
 });
 
-export const completeTodo = id => ({
+export const completeTodo = (id) => ({
   type: TodoTypes.COMPLETE_TODO,
   id
 });
 
-export const completeAll = completed => ({
+export const completeAll = (completed) => ({
   type: TodoTypes.COMPLETE_ALL,
   completed
 });
