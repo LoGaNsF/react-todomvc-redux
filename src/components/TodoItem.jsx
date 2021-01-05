@@ -3,33 +3,18 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 const TodoItem = ({ data, editTodo, deleteTodo, completeTodo }) => {
-  const [state, setState] = useState({ editing: false, editText: data.text });
+  const [text, setText] = useState(data.text);
+  const [editing, setEditing] = useState(false);
 
-  const handleSubmit = () => {
-    const val = state.editText.trim();
+  const handleChange = (e) => setText(e.target.value);
 
-    if (val) {
-      setState({ editing: false, editText: val });
-      editTodo(data.id, val);
-    } else {
-      deleteTodo(data.id);
-    }
-  };
-
-  const handleKeyDown = (event) => {
-    if (event.which === 27) {
-      setState({ editing: false, editText: data.text });
-    } else if (event.which === 13) {
-      handleSubmit();
-    }
-  };
-
-  const handleChange = (event) => {
-    setState({ editText: event.target.value });
+  const handleBlur = () => {
+    editTodo(data.id, text);
+    setEditing(false);
   };
 
   return (
-    <li className={classnames({ completed: data.completed, editing: state.editing })}>
+    <li className={classnames({ completed: data.completed, editing })}>
       <div className="view">
         <input
           type="checkbox"
@@ -37,7 +22,7 @@ const TodoItem = ({ data, editTodo, deleteTodo, completeTodo }) => {
           checked={data.completed}
           onChange={() => completeTodo(data.id)}
         />
-        <label htmlFor="toggle" onDoubleClick={() => setState({ editing: true })}>
+        <label htmlFor="toggle" onDoubleClick={() => setEditing(true)}>
           {data.text}
         </label>
         <button
@@ -47,13 +32,15 @@ const TodoItem = ({ data, editTodo, deleteTodo, completeTodo }) => {
           onClick={() => deleteTodo(data.id)}
         />
       </div>
-      <input
-        type="text"
-        className="edit"
-        value={state.editText}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-      />
+      {editing && (
+        <input
+          className="edit"
+          value={text}
+          onInput={handleChange}
+          onBlur={handleBlur}
+          onChange={() => {}}
+        />
+      )}
     </li>
   );
 };
