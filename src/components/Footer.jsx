@@ -1,8 +1,11 @@
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { SHOW_ALL, SHOW_ACTIVE, SHOW_COMPLETED } from '../constants/FilterTypes';
+import { clearCompleted } from '../actions/TodoActions';
+import setVisibilityFilter from '../actions/FilterActions';
 
-import FilterLink from '../containers/FilterLink';
+import Link from './Link';
+import { getActiveTodosCount, getCompletedTodosCount } from '../selectors';
 
 const FILTER_TITLES = {
   [SHOW_ALL]: 'All',
@@ -10,31 +13,36 @@ const FILTER_TITLES = {
   [SHOW_COMPLETED]: 'Completed'
 };
 
-const Footer = ({ activeCount, completedCount, onClearCompleted }) => (
-  <footer className="footer">
-    <span className="todo-count">
-      <strong>{activeCount}</strong>
-      {activeCount > 1 ? ' items left' : ' item left'}
-    </span>
-    <ul className="filters">
-      {Object.keys(FILTER_TITLES).map((filter) => (
-        <li key={filter}>
-          <FilterLink filter={filter}>{FILTER_TITLES[filter]}</FilterLink>
-        </li>
-      ))}
-    </ul>
-    {!!completedCount && (
-      <button type="button" className="clear-completed" onClick={onClearCompleted}>
-        Clear completed
-      </button>
-    )}
-  </footer>
-);
+const Footer = () => {
+  const dispatch = useDispatch();
+  const onClearCompleted = () => dispatch(clearCompleted());
+  const activeCount = useSelector(getActiveTodosCount);
+  const completedCount = useSelector(getCompletedTodosCount);
+  const setFilter = (filter) => dispatch(setVisibilityFilter(filter));
+  const visibilityFilter = useSelector((state) => state.visibilityFilter);
 
-Footer.propTypes = {
-  activeCount: PropTypes.number.isRequired,
-  completedCount: PropTypes.number.isRequired,
-  onClearCompleted: PropTypes.func.isRequired
+  return (
+    <footer className="footer">
+      <span className="todo-count">
+        <strong>{activeCount}</strong>
+        {activeCount > 1 ? ' items left' : ' item left'}
+      </span>
+      <ul className="filters">
+        {Object.keys(FILTER_TITLES).map((filter) => (
+          <li key={filter}>
+            <Link active={visibilityFilter === filter} setFilter={() => setFilter(filter)}>
+              {FILTER_TITLES[filter]}
+            </Link>
+          </li>
+        ))}
+      </ul>
+      {!!completedCount && (
+        <button type="button" className="clear-completed" onClick={onClearCompleted}>
+          Clear completed
+        </button>
+      )}
+    </footer>
+  );
 };
 
 export default Footer;

@@ -1,13 +1,16 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
-const Header = ({ addTodo }) => {
+import { addTodo } from '../actions/TodoActions';
+
+const Header = () => {
+  const dispatch = useDispatch();
   const [value, setValue] = useState('');
 
   const handleKeyDown = (event) => {
     if (event.keyCode === 13) {
       event.preventDefault();
-      addTodo(event.target.value);
+      dispatch(addTodo(event.target.value));
       setValue('');
     }
   };
@@ -25,10 +28,6 @@ const Header = ({ addTodo }) => {
       />
     </header>
   );
-};
-
-Header.propTypes = {
-  addTodo: PropTypes.func.isRequired
 };
 
 export default Header;
