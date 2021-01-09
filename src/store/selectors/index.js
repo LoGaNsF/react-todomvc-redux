@@ -20,6 +20,15 @@ export const getVisibleTodos = createSelector(
   }
 );
 
+export const getActiveTodosCount = createSelector([getTodos], (todos) =>
+  todos.reduce((count, todo) => (!todo.completed ? count + 1 : count), 0)
+);
+
 export const getCompletedTodosCount = createSelector([getTodos], (todos) =>
   todos.reduce((count, todo) => (todo.completed ? count + 1 : count), 0)
+);
+
+export const areAllTodosCompleted = createSelector(
+  [getTodos],
+  (todos) => todos.length && todos.every((todo) => todo.completed)
 );

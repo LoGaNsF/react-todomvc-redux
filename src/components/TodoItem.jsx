@@ -3,39 +3,40 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 const TodoItem = ({ data, editTodo, deleteTodo, completeTodo }) => {
-  const [text, setText] = useState(data.text);
+  const { id, text, completed } = data;
+  const [editText, setEditText] = useState(text);
   const [editing, setEditing] = useState(false);
 
-  const handleChange = (e) => setText(e.target.value);
+  const handleChange = (e) => setEditText(e.target.value);
 
   const handleBlur = () => {
-    editTodo(data.id, text);
+    editTodo(id, editText);
     setEditing(false);
   };
 
   return (
-    <li className={classnames({ completed: data.completed, editing })}>
+    <li className={classnames({ completed, editing })}>
       <div className="view">
         <input
           type="checkbox"
           className="toggle"
-          checked={data.completed}
-          onChange={() => completeTodo(data.id)}
+          checked={completed}
+          onChange={() => completeTodo(id)}
         />
         <label htmlFor="toggle" onDoubleClick={() => setEditing(true)}>
-          {data.text}
+          {text}
         </label>
         <button
           type="button"
           aria-label="Delete"
           className="destroy"
-          onClick={() => deleteTodo(data.id)}
+          onClick={() => deleteTodo(id)}
         />
       </div>
       {editing && (
         <input
           className="edit"
-          value={text}
+          value={editText}
           onInput={handleChange}
           onBlur={handleBlur}
           onChange={() => {}}

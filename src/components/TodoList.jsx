@@ -1,26 +1,29 @@
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
 import TodoItem from './TodoItem';
+import { getVisibleTodos } from '../store/selectors';
+import { completeTodo, deleteTodo, editTodo } from '../store/actions/TodoActions';
 
-const TodoList = ({ todos, actions }) => (
-  <ul className="todo-list">
-    {todos.map((todo) => (
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      <TodoItem key={todo.id} data={todo} {...actions} />
-    ))}
-  </ul>
-);
+const TodoList = () => {
+  const dispatch = useDispatch();
+  const todos = useSelector(getVisibleTodos);
+  const update = (id, text) => dispatch(editTodo(id, text));
+  const remove = (id) => dispatch(deleteTodo(id));
+  const complete = (id) => dispatch(completeTodo(id));
 
-TodoList.propTypes = {
-  todos: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      text: PropTypes.string.isRequired,
-      completed: PropTypes.bool.isRequired,
-      created_at: PropTypes.instanceOf(Date).isRequired
-    }).isRequired
-  ).isRequired,
-  actions: PropTypes.objectOf(PropTypes.func).isRequired
+  return (
+    <ul className="todo-list">
+      {todos.map((todo) => (
+        <TodoItem
+          key={todo.id}
+          data={todo}
+          editTodo={update}
+          deleteTodo={remove}
+          completeTodo={complete}
+        />
+      ))}
+    </ul>
+  );
 };
 
 export default TodoList;
