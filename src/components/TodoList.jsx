@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 
 import TodoItem from './TodoItem';
-import { getVisibleTodos } from '../selectors';
-import { completeTodo, deleteTodo, editTodo } from '../actions/TodoActions';
+import { getVisibleTodos } from '../store/selectors';
+import { completeTodo, deleteTodo, editTodo } from '../store/actions/TodoActions';
 
 const TodoList = () => {
   const dispatch = useDispatch();

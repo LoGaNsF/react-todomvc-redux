@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { addTodo } from '../actions/TodoActions';
+import { addTodo } from '../store/actions/TodoActions';
 
 const Header = () => {
   const dispatch = useDispatch();

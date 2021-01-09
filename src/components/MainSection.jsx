@@ -2,8 +2,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Footer from './Footer';
 import TodoList from './TodoList';
-import { completeAll } from '../actions/TodoActions';
-import { areAllTodosCompleted } from '../selectors';
+import { completeAll } from '../store/actions/TodoActions';
+import { areAllTodosCompleted } from '../store/selectors';
 
 const MainSection = () => {
   const dispatch = useDispatch();
